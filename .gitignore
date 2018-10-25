@@ -34,3 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+#Some textures I don't wanna download to GIT
+Assets/Dungeon\ Art\ Pack*
+Assets/HighQualityBricks\&Walls*
