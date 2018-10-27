@@ -7,6 +7,7 @@ public class SwitcherTwo : SwitcherController
     SwitcherTwo() : base(0.83f, 8.67f) {}
     // Use this for initialization
     void Start () {
+        anim = GetComponent<Animator>();
         if (enemyLights.Length != 25)
         {
             Debug.Log(string.Format("Unexpected number of Second Switcher lights, expected: 25, current: {0}", enemyLights.Length));

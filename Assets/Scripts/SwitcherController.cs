@@ -18,10 +18,9 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
         NoMoving
     }
 
-    //private Animator anim;
+    protected Animator anim;
 
-
-    private static readonly float DURATION = 5f; 
+    private static readonly float DURATION = 50f; 
     private readonly float SIZE = 0.45f;
     private readonly float TOP = 3.67f;
     private readonly float BOTTOM = -3.67f;
@@ -36,6 +35,7 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     private float newX = 0f;
     private float newY = 0f;
     private int newEulerZ = 0;
+    private bool waitForLineNum = false;
 
     public GameObject[] enemyLights;
     public GameObject this[int x, int y] {
@@ -62,29 +62,34 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
         currentState = MovingState.NoMoving;
         newX = LEFT;
         newY = TOP;
-        //anim = GetComponent<Animator>();
     }
 
     private void Awake() {
-        SwitchPosition();
+        PreparePositionChanging();
     }
 
     // Update is called once per frame
     protected void UpdateControllerState() {
-        if (currentState != MovingState.NoMoving) {
-            PositionChanging();
+        TimerPreparePositionChanging();
+        PositionChanging();
+
+        if (waitForLineNum) {
+
         }
+    }
+
+    private void TimerPreparePositionChanging() {
         if (timeRemaining > 0) {
             //Debug.Log("Waitting..." + timeRemaining);
             timeRemaining -= Time.deltaTime;
             if (timeRemaining <= 0) {
                 timeRemaining = DURATION;
-                SwitchPosition();
+                PreparePositionChanging();
             }
         }
     }
 
-    void SwitchPosition() {
+    void PreparePositionChanging() {
         do {
             Random.InitState(System.DateTime.Now.Millisecond);
             prepearingSide = (Side)Random.Range(0, 4);
@@ -120,6 +125,10 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     }
 
     void PositionChanging() {
+        if (currentState == MovingState.NoMoving) {
+            return;
+        }
+
         int coef = currentState == MovingState.InsideWall ? (-1) : 1;
         Mooving(coef);
     }
@@ -166,10 +175,15 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
             transform.position = new Vector3(newX, newY, 0); ;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, newEulerZ));
             currentState = MovingState.OutsideWall;
-
+            anim.SetBool("TurnedOn", false);
         } else {
             transform.position = newPos;
         }
+    }
+
+    private void FinishTurning() {
+        PreparePositionChanging();
+        waitForLineNum = true;
     }
 
     //protected abstract float getAnyShit();

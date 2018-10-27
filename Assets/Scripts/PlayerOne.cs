@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerOne : PlayerController
-{
-    public PlayerOne()
+public class PlayerOne : PlayerController 
     {
-        horizontal = "Horizontal_1";
-        vertical = "Vertical_1";
-    }
-
+    public PlayerOne() : base("Horizontal_1", 
+                              "Vertical_1", 
+                              "Action_1", 
+                              new List<KeyCode> { KeyCode.Keypad1,
+                                                  KeyCode.Keypad2,
+                                                  KeyCode.Keypad3,
+                                                  KeyCode.Keypad4,
+                                                  KeyCode.Keypad5 }) { }
     // Use this for initialization
     void Start () {
         rgbd2d = GetComponent<Rigidbody2D>();
@@ -17,6 +19,15 @@ public class PlayerOne : PlayerController
     }
 
     // Update is called once per frame
+
+    void Update() {
+        TrySwitchLignt();
+        string s = Input.inputString;
+        if (!string.IsNullOrEmpty(s)) {
+
+        }
+    }
+
     void FixedUpdate ()
     {
         rgbd2d.velocity = PlayerVelocity();

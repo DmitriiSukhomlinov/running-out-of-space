@@ -4,23 +4,64 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     public float speed = 1;
+    public GameObject switcher;
 
-    protected string horizontal;
-    protected string vertical;
+    private readonly string HORIZONTAL;
+    private readonly string VERTICAL;
+    private readonly string ACTION;
+    private readonly List<KeyCode> LINE;
+
     protected Rigidbody2D rgbd2d;
     protected Animator anim;
 
+    private Animator switcherAnimator;
     private Vector2 movement;
+    private bool switchLight = false;
+    private int horizontalLine = -1;
+
+    PlayerController() { }
+
+    protected PlayerController(string h, string v, string a, List<KeyCode> l) {
+        HORIZONTAL = h;
+        VERTICAL = v;
+        ACTION = a;
+        LINE = l;
+    }
 
     // Use this for initialization
     void Start () {
-
+        switcherAnimator = switcher.GetComponent<Animator>();
     }
-	
+
+    protected void TrySwitchLignt() {
+        if (!switchLight) {
+            return;
+        }
+
+        int num = LineButtonClicked();
+        if (horizontalLine == -1) {
+            horizontalLine = num;
+        } else {
+            
+
+
+
+
+            horizontalLine = -1;
+        }
+    }
+
+    private int LineButtonClicked() {
+
+
+
+        return 0;
+    }
+
     protected Vector2 PlayerVelocity ()
     {
-        float moveHorizontal = Input.GetAxisRaw(horizontal);
-        float moveVertical = Input.GetAxisRaw(vertical);
+        float moveHorizontal = Input.GetAxisRaw(HORIZONTAL);
+        float moveVertical = Input.GetAxisRaw(VERTICAL);
         movement = new Vector2(moveHorizontal, moveVertical);
         return new Vector2(moveHorizontal, moveVertical) * speed;
     }
@@ -42,33 +83,50 @@ public class PlayerController : MonoBehaviour {
         return result;
     }
 
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
+    void OnTriggerEnter2D(Collider2D other) {
         TrySwitchActivator(other, true);
     }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
+    void OnTriggerStay2D(Collider2D other) {
+        switchLight = Input.GetButtonDown(ACTION);
+        if (!switchLight) {
+            return;
+        }
+
+        Animator objAnim = getActivatorsAnimator(other);
+        if (objAnim == null) {
+            return;
+        }
+
+        objAnim.SetBool("TurnedOn", true);
+
+    }
+
+    void OnTriggerExit2D(Collider2D other) {
         TrySwitchActivator(other, false);     
     }
 
-    private void TrySwitchActivator(Collider2D other, bool on)
-    {
-        if (other.gameObject.CompareTag("Activator"))
-        {
-            Animator objAnim = other.gameObject.GetComponent<Animator>();
-            if (objAnim == null)
-            {
-                Debug.Log("Activator animator isn't found");
-            }
-            objAnim.SetBool("Illuminated", on);
-        }
-        else
-        {
-            Debug.Log(string.Format("The attemp to switch game object without Activator tag, but with tag {0}", other.gameObject.tag));
+    private void TrySwitchActivator(Collider2D other, bool on) {
+        Animator objAnim = getActivatorsAnimator(other);
+        if (objAnim == null) {
+            return;
         }
 
+        objAnim.SetBool("Illuminated", on);
+    }
+
+    private Animator getActivatorsAnimator(Collider2D collider) {
+        if (collider.gameObject.CompareTag("Activator")) {
+            Animator objAnim = collider.gameObject.GetComponent<Animator>();
+            if (objAnim == null) {
+                Debug.Log("Activator animator isn't found");
+            }
+            return objAnim;
+        } else {
+            Debug.Log(string.Format("The attemp to switch game object without Activator tag, but with tag {0}", collider.gameObject.tag));
+        }
+
+        return null;
     }
 
 
