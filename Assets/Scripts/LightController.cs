@@ -10,10 +10,10 @@ public class LightController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        spriteMask = GetComponentInChildren<SpriteMask>();
+        spriteMask = GetComponent<SpriteMask>();
         anim = GetComponent<Animator>();
 
-        LightOn(true);
+        LightOn(false);
     }
 
     // Update is called once per frame

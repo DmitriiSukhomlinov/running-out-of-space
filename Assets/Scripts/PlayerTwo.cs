@@ -6,12 +6,7 @@ public class PlayerTwo : PlayerController
 {
     PlayerTwo() : base("Horizontal_2", 
                        "Vertical_2", 
-                       "Action_2", 
-                       new List<KeyCode> { KeyCode.Alpha1,
-                                           KeyCode.Alpha2,
-                                           KeyCode.Alpha3,
-                                           KeyCode.Alpha4,
-                                           KeyCode.Alpha5 }) { }
+                       "Action_2") { }
 
     // Use this for initialization
     void Start () {

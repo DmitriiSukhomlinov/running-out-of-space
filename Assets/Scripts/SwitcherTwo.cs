@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class SwitcherTwo : SwitcherController
 {
-    SwitcherTwo() : base(0.83f, 8.67f) {}
+    SwitcherTwo() : base(0.83f, 8.67f, new List<KeyCode> { KeyCode.Keypad1,
+                                                  KeyCode.Keypad2,
+                                                  KeyCode.Keypad3,
+                                                  KeyCode.Keypad4,
+                                                  KeyCode.Keypad5 }) { }
+
     // Use this for initialization
     void Start () {
         anim = GetComponent<Animator>();

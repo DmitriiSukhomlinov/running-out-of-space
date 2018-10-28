@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public /*abstract*/ class SwitcherController : MonoBehaviour {
-    
+
     private enum Side {
         Top = 0,
         Right,
@@ -26,11 +26,13 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     private readonly float BOTTOM = -3.67f;
     private readonly float LEFT;
     private readonly float RIGHT;
+    private readonly List<KeyCode> LINE;
 
     private MovingState currentState;
     private Side currentSide = Side.Left;
     private Side prepearingSide = Side.Right;
     private float timeRemaining = DURATION;
+    private int horizontalLine = -1;
 
     private float newX = 0f;
     private float newY = 0f;
@@ -40,7 +42,7 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     public GameObject[] enemyLights;
     public GameObject this[int x, int y] {
         get {
-            return enemyLights[((x - 1) * 5) + y];
+            return enemyLights[((x - 1) * 5) + (y - 1)];
         }
         set 
         {
@@ -49,9 +51,10 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     }
 
     protected SwitcherController() { }
-    protected SwitcherController(float left, float right) {
+    protected SwitcherController(float left, float right, List<KeyCode> l) {
         LEFT = left;
         RIGHT = right;
+        LINE = l;
     }
 
     // Use this for initialization
@@ -72,10 +75,35 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     protected void UpdateControllerState() {
         TimerPreparePositionChanging();
         PositionChanging();
+        LightHandler();
+    }
 
-        if (waitForLineNum) {
-
+    private void LightHandler() {
+        if (waitForLineNum && LineNumberWasPressed()) {
+            int line = PressedLineNumber();
+            if (horizontalLine == -1) {
+                horizontalLine = line;
+            } else {
+                TurnOnTheLight(line, horizontalLine);
+                horizontalLine = -1;
+                waitForLineNum = false;
+            }
         }
+    }
+
+    private void TurnOnTheLight(int i, int j, bool on = true) {
+        SpriteMask lightSpriteMask = this[i, j].GetComponent<SpriteMask>();
+        if (lightSpriteMask == null) {
+            Debug.Log("Light Sprite Mask isn't found");
+            return;
+        }
+        Animator lightAnimator = this[i, j].GetComponent<Animator>();
+        if (lightAnimator == null) {
+            Debug.Log("Light Animator isn't found");
+            return;
+        }
+        lightSpriteMask.enabled = on;
+        lightAnimator.SetBool("lightOn", on);
     }
 
     private void TimerPreparePositionChanging() {
@@ -184,6 +212,27 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     private void FinishTurning() {
         PreparePositionChanging();
         waitForLineNum = true;
+    }
+
+    private bool LineNumberWasPressed() {
+        bool result = false;
+        foreach (KeyCode key in LINE) {
+            result |= Input.GetKeyDown(key);
+        }
+
+        return result;
+    }
+
+    private int PressedLineNumber() {
+        int result = -1;
+        for (int i = 0; i < LINE.Count; i++) {
+            if (Input.GetKeyDown(LINE[i])) {
+                result = i + 1;
+                break;
+            }
+        }
+
+        return result;
     }
 
     //protected abstract float getAnyShit();

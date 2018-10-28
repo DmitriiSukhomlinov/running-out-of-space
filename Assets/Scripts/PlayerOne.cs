@@ -6,12 +6,7 @@ public class PlayerOne : PlayerController
     {
     public PlayerOne() : base("Horizontal_1", 
                               "Vertical_1", 
-                              "Action_1", 
-                              new List<KeyCode> { KeyCode.Keypad1,
-                                                  KeyCode.Keypad2,
-                                                  KeyCode.Keypad3,
-                                                  KeyCode.Keypad4,
-                                                  KeyCode.Keypad5 }) { }
+                              "Action_1") { }
     // Use this for initialization
     void Start () {
         rgbd2d = GetComponent<Rigidbody2D>();

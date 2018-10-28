@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour {
     private readonly string HORIZONTAL;
     private readonly string VERTICAL;
     private readonly string ACTION;
-    private readonly List<KeyCode> LINE;
 
     protected Rigidbody2D rgbd2d;
     protected Animator anim;
@@ -17,15 +16,13 @@ public class PlayerController : MonoBehaviour {
     private Animator switcherAnimator;
     private Vector2 movement;
     private bool switchLight = false;
-    private int horizontalLine = -1;
 
     PlayerController() { }
 
-    protected PlayerController(string h, string v, string a, List<KeyCode> l) {
+    protected PlayerController(string h, string v, string a) {
         HORIZONTAL = h;
         VERTICAL = v;
         ACTION = a;
-        LINE = l;
     }
 
     // Use this for initialization
@@ -37,25 +34,6 @@ public class PlayerController : MonoBehaviour {
         if (!switchLight) {
             return;
         }
-
-        int num = LineButtonClicked();
-        if (horizontalLine == -1) {
-            horizontalLine = num;
-        } else {
-            
-
-
-
-
-            horizontalLine = -1;
-        }
-    }
-
-    private int LineButtonClicked() {
-
-
-
-        return 0;
     }
 
     protected Vector2 PlayerVelocity ()
