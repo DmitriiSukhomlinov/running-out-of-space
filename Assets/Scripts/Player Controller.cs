@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     public float speed = 1;
-    public GameObject switcher;
 
     private readonly string HORIZONTAL;
     private readonly string VERTICAL;
@@ -13,9 +12,9 @@ public class PlayerController : MonoBehaviour {
     protected Rigidbody2D rgbd2d;
     protected Animator anim;
 
-    private Animator switcherAnimator;
     private Vector2 movement;
     private bool switchLight = false;
+    public HealthBar healthBar;
 
     PlayerController() { }
 
@@ -26,9 +25,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-        switcherAnimator = switcher.GetComponent<Animator>();
-    }
+    void Start () {}
 
     protected void TrySwitchLignt() {
         if (!switchLight) {
@@ -105,6 +102,19 @@ public class PlayerController : MonoBehaviour {
         }
 
         return null;
+    }
+
+    public void DecreaseHealth() {
+        healthBar.DecreaseValue();
+        //if (health == 0) {
+
+        //    return;
+        //}
+        //health--;
+    }
+
+    private void DieAndGameOver() {
+
     }
 
 
