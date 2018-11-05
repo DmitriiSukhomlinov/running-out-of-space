@@ -39,8 +39,9 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     private int newEulerZ = 0;
     private bool waitForLineNum = false;
 
-    public GameObject[] enemyLights;
-    public GameObject this[int x, int y] {
+    public GameController gameController;
+    public LightController[] enemyLights;
+    public LightController this[int x, int y] {
         get {
             return enemyLights[((x - 1) * 5) + (y - 1)];
         }
@@ -92,18 +93,13 @@ public /*abstract*/ class SwitcherController : MonoBehaviour {
     }
 
     private void TurnOnTheLight(int i, int j, bool on = true) {
-        SpriteMask lightSpriteMask = this[i, j].GetComponent<SpriteMask>();
-        if (lightSpriteMask == null) {
-            Debug.Log("Light Sprite Mask isn't found");
+        LightController lightObject = this[i, j];
+        if (lightObject == null) {
+            Debug.Log("Light Controller isn't found");
             return;
         }
-        Animator lightAnimator = this[i, j].GetComponent<Animator>();
-        if (lightAnimator == null) {
-            Debug.Log("Light Animator isn't found");
-            return;
-        }
-        lightSpriteMask.enabled = on;
-        lightAnimator.SetBool("lightOn", on);
+
+        lightObject.SetLightState(on);
     }
 
     private void TimerPreparePositionChanging() {

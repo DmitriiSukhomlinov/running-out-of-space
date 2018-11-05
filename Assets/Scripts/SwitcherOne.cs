@@ -22,6 +22,10 @@ public class SwitcherOne : SwitcherController
 
     // Update is called once per frame
     void Update () {
+        if (gameController.isGameEnded()) {
+            return;
+        }
+
         UpdateControllerState();
     }
 

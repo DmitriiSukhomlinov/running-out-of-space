@@ -4,14 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour {
-
+    public GameController gameController;
     public Transform objectToFollow;
 
-    public int healthValue = 100;
+    private int healthValue = 100;
     private RectTransform myCanvas;
     private Image imageComponent;
-
-    private float TIME_TO_VISIBILITY = 0.5f;
 
     private float timeSinceDamage = 1f;
 
@@ -23,6 +21,10 @@ public class HealthBar : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate() {
+        if (gameController.isGameEnded()) {
+            return;
+        }
+
         HealthBarMooving();
 
         timeSinceDamage = Mathf.Min(1f, timeSinceDamage + Time.deltaTime);
@@ -46,7 +48,7 @@ public class HealthBar : MonoBehaviour {
 
     public void DecreaseValue() {
         if (healthValue == 0) {
-
+            gameController.EndGame();
             return;
         }
         timeSinceDamage = 0f;

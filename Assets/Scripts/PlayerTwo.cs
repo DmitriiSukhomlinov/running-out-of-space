@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTwo : PlayerController
-{
+public class PlayerTwo : PlayerController {
     PlayerTwo() : base("Horizontal_2", 
                        "Vertical_2", 
                        "Action_2") { }
@@ -16,11 +15,19 @@ public class PlayerTwo : PlayerController
 
     // Update is called once per frame
     void Update() {
+        if (gameController.isGameEnded()) {
+            return;
+        }
+
         TrySwitchLignt();
     }
 
-    void FixedUpdate ()
-    {
+    void FixedUpdate () {
+        if (gameController.isGameEnded()) {
+            rgbd2d.velocity = Vector3.zero;
+            return;
+        }
+
         rgbd2d.velocity = PlayerVelocity();
         rgbd2d.rotation = PlayerRotation();
 

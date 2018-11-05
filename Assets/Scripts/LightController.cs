@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LightController : MonoBehaviour {
     public PlayerController player;
+    public LightTimerController lightTimer;
+    public GameController gameController;
 
     private SpriteMask spriteMask;
     private Animator anim;
@@ -18,12 +20,16 @@ public class LightController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (gameController.isGameEnded()) {
+            return;
+        }
+
         if (!LightState()) {
             return;
         }
 
         float distance = Vector3.Distance(transform.position, player.transform.position);
-        if (distance > 1) {
+        if (distance > 1.5f) {
             return;
         }
 
@@ -31,9 +37,10 @@ public class LightController : MonoBehaviour {
         player.DecreaseHealth();
     }
 
-    private void SetLightState(bool On) {
+    public void SetLightState(bool On) {
         spriteMask.enabled = On;
         anim.SetBool("lightOn", On);
+        lightTimer.TurnTimerState(On);
     }
 
     private bool LightState() {

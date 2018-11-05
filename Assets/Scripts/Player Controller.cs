@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     public float speed = 1;
+    public HealthBar healthBar;
+    public GameController gameController;
 
     private readonly string HORIZONTAL;
     private readonly string VERTICAL;
@@ -14,7 +16,6 @@ public class PlayerController : MonoBehaviour {
 
     private Vector2 movement;
     private bool switchLight = false;
-    public HealthBar healthBar;
 
     PlayerController() { }
 
@@ -33,8 +34,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    protected Vector2 PlayerVelocity ()
-    {
+    protected Vector2 PlayerVelocity () {
         float moveHorizontal = Input.GetAxisRaw(HORIZONTAL);
         float moveVertical = Input.GetAxisRaw(VERTICAL);
         movement = new Vector2(moveHorizontal, moveVertical);

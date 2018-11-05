@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerOne : PlayerController 
-    {
+public class PlayerOne : PlayerController {
     public PlayerOne() : base("Horizontal_1", 
                               "Vertical_1", 
                               "Action_1") { }
@@ -16,15 +15,19 @@ public class PlayerOne : PlayerController
     // Update is called once per frame
 
     void Update() {
-        TrySwitchLignt();
-        string s = Input.inputString;
-        if (!string.IsNullOrEmpty(s)) {
-
+        if (gameController.isGameEnded()) {
+            return;
         }
+
+        TrySwitchLignt();
     }
 
-    void FixedUpdate ()
-    {
+    void FixedUpdate () {
+        if (gameController.isGameEnded()) {
+            rgbd2d.velocity = Vector3.zero;
+            return;
+        }
+
         rgbd2d.velocity = PlayerVelocity();
         rgbd2d.rotation = PlayerRotation();
     }
