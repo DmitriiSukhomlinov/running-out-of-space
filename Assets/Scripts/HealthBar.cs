@@ -21,7 +21,7 @@ public class HealthBar : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate() {
-        if (gameController.isGameEnded()) {
+        if (gameController.IsGameEnded()) {
             return;
         }
 
@@ -46,9 +46,9 @@ public class HealthBar : MonoBehaviour {
         transform.localPosition = viewportPoint;
     }
 
-    public void DecreaseValue() {
+    public void DecreaseValue(GameController.Player player) {
         if (healthValue == 0) {
-            gameController.EndGame();
+            gameController.EndGame(player);
             return;
         }
         timeSinceDamage = 0f;

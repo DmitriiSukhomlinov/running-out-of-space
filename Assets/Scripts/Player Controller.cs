@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+abstract public class PlayerController : MonoBehaviour {
     public float speed = 1;
     public HealthBar healthBar;
     public GameController gameController;
@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 
     protected Rigidbody2D rgbd2d;
     protected Animator anim;
+    protected Animation playerAnimation;
 
     private Vector2 movement;
     private bool switchLight = false;
@@ -32,6 +33,11 @@ public class PlayerController : MonoBehaviour {
         if (!switchLight) {
             return;
         }
+    }
+
+    protected void DisableAnimationAndMoving() {
+        rgbd2d.velocity = Vector3.zero;
+        anim.enabled = false;
     }
 
     protected Vector2 PlayerVelocity () {
@@ -104,18 +110,6 @@ public class PlayerController : MonoBehaviour {
         return null;
     }
 
-    public void DecreaseHealth() {
-        healthBar.DecreaseValue();
-        //if (health == 0) {
-
-        //    return;
-        //}
-        //health--;
-    }
-
-    private void DieAndGameOver() {
-
-    }
-
+    abstract public void DecreaseHealth();
 
 }

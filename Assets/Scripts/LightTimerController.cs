@@ -27,7 +27,7 @@ public class LightTimerController : MonoBehaviour {
     }
 
     void LateUpdate() {
-        if (gameController.isGameEnded()) {
+        if (gameController.IsGameEnded()) {
             return;
         }
 

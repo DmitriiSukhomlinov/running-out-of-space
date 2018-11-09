@@ -11,11 +11,12 @@ public class PlayerTwo : PlayerController {
     void Start () {
         rgbd2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        playerAnimation = GetComponent<Animation>();
     }
 
     // Update is called once per frame
     void Update() {
-        if (gameController.isGameEnded()) {
+        if (gameController.IsGameEnded()) {
             return;
         }
 
@@ -23,13 +24,17 @@ public class PlayerTwo : PlayerController {
     }
 
     void FixedUpdate () {
-        if (gameController.isGameEnded()) {
-            rgbd2d.velocity = Vector3.zero;
+        if (gameController.IsGameEnded()) {
+            DisableAnimationAndMoving();
             return;
         }
 
         rgbd2d.velocity = PlayerVelocity();
         rgbd2d.rotation = PlayerRotation();
 
+    }
+
+    override public void DecreaseHealth() {
+        healthBar.DecreaseValue(GameController.Player.Second);
     }
 }
